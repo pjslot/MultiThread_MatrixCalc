@@ -1,0 +1,16 @@
+D:\Users\Dan\081222_practice\MultiThread_MatrixCalc\MultiThread_MatrixCalc\bin\Debug\MultiThread_MatrixCalc.exe.config
+D:\Users\Dan\081222_practice\MultiThread_MatrixCalc\MultiThread_MatrixCalc\bin\Debug\MultiThread_MatrixCalc.exe
+D:\Users\Dan\081222_practice\MultiThread_MatrixCalc\MultiThread_MatrixCalc\bin\Debug\MultiThread_MatrixCalc.pdb
+D:\Users\Dan\081222_practice\MultiThread_MatrixCalc\MultiThread_MatrixCalc\obj\Debug\MultiThread_MatrixCalc.csproj.AssemblyReference.cache
+D:\Users\Dan\081222_practice\MultiThread_MatrixCalc\MultiThread_MatrixCalc\obj\Debug\MultiThread_MatrixCalc.csproj.SuggestedBindingRedirects.cache
+D:\Users\Dan\081222_practice\MultiThread_MatrixCalc\MultiThread_MatrixCalc\obj\Debug\MainWindow.g.cs
+D:\Users\Dan\081222_practice\MultiThread_MatrixCalc\MultiThread_MatrixCalc\obj\Debug\App.g.cs
+D:\Users\Dan\081222_practice\MultiThread_MatrixCalc\MultiThread_MatrixCalc\obj\Debug\MultiThread_MatrixCalc_MarkupCompile.cache
+D:\Users\Dan\081222_practice\MultiThread_MatrixCalc\MultiThread_MatrixCalc\obj\Debug\MultiThread_MatrixCalc_MarkupCompile.lref
+D:\Users\Dan\081222_practice\MultiThread_MatrixCalc\MultiThread_MatrixCalc\obj\Debug\MainWindow.baml
+D:\Users\Dan\081222_practice\MultiThread_MatrixCalc\MultiThread_MatrixCalc\obj\Debug\MultiThread_MatrixCalc.g.resources
+D:\Users\Dan\081222_practice\MultiThread_MatrixCalc\MultiThread_MatrixCalc\obj\Debug\MultiThread_MatrixCalc.Properties.Resources.resources
+D:\Users\Dan\081222_practice\MultiThread_MatrixCalc\MultiThread_MatrixCalc\obj\Debug\MultiThread_MatrixCalc.csproj.GenerateResource.cache
+D:\Users\Dan\081222_practice\MultiThread_MatrixCalc\MultiThread_MatrixCalc\obj\Debug\MultiThread_MatrixCalc.csproj.CoreCompileInputs.cache
+D:\Users\Dan\081222_practice\MultiThread_MatrixCalc\MultiThread_MatrixCalc\obj\Debug\MultiThread_MatrixCalc.exe
+D:\Users\Dan\081222_practice\MultiThread_MatrixCalc\MultiThread_MatrixCalc\obj\Debug\MultiThread_MatrixCalc.pdb
