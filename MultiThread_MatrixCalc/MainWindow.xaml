@@ -5,32 +5,49 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MultiThread_MatrixCalc"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <TextBox x:Name="nMatrixSize" HorizontalAlignment="Left" Margin="170,67,0,0" TextWrapping="Wrap" Text="10" VerticalAlignment="Top" Width="120"/>
-        <Label Content="n size" HorizontalAlignment="Left" Margin="109,63,0,0" VerticalAlignment="Top"/>
-        <Button Content="calc!" HorizontalAlignment="Left" Margin="342,76,0,0" VerticalAlignment="Top" Height="57" Width="94" Click="Button_Click"/>
-        <TextBox x:Name="regularSumBox" HorizontalAlignment="Left" Margin="497,104,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="73"/>
-        <Label Content="regular sum&#xD;&#xA;" HorizontalAlignment="Left" Margin="497,55,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.534,0.511"/>
-        <TextBox x:Name="multiSumBox" HorizontalAlignment="Left" Margin="497,216,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="73"/>
-        <Label Content="multithread sum&#xD;&#xA;" HorizontalAlignment="Left" Margin="497,174,0,0" VerticalAlignment="Top" Width="73"/>
-        <TextBox x:Name="parallelSumBox" HorizontalAlignment="Left" Margin="504,317,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="67"/>
-        <Label Content="parallel sum&#xD;&#xA;" HorizontalAlignment="Left" Margin="497,270,0,0" VerticalAlignment="Top"/>
+        Title="MainWindow" Height="390" Width="730">
+    <Grid Margin="0,0,0,9">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="461*"/>
+            <ColumnDefinition Width="269*"/>
+        </Grid.ColumnDefinitions>
+        <Rectangle HorizontalAlignment="Left" Height="73" Margin="23,59,0,0" Stroke="Black" VerticalAlignment="Top" Width="91"/>
+        <Rectangle HorizontalAlignment="Left" Height="295" Margin="450,41,0,0" Stroke="Black" VerticalAlignment="Top" Width="115" Grid.ColumnSpan="2"/>
+
+        <Rectangle HorizontalAlignment="Left" Height="295" Margin="128,41,0,0" Stroke="Black" VerticalAlignment="Top" Width="115" Grid.Column="1"/>
+        <TextBox x:Name="nMatrixSize" HorizontalAlignment="Left" Margin="260,58,0,0" TextWrapping="Wrap" Text="10" VerticalAlignment="Top" Width="50"/>
+        <Label Content="Matrix Size" HorizontalAlignment="Left" Margin="158,54,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="calcButton" Content="Calculate!" HorizontalAlignment="Left" Margin="338,60,0,0" VerticalAlignment="Top" Height="78" Width="94" Click="Button_Click"/>
+        <TextBox x:Name="regularSumBox" HorizontalAlignment="Left" Margin="10,90,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="73" Grid.Column="1"/>
+        <Label Content="Regular Sum" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.534,0.511" Grid.Column="1"/>
+        <TextBox x:Name="multiSumBox" HorizontalAlignment="Left" Margin="10,202,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="73" Grid.Column="1"/>
+        <Label Content="Multithread Sum&#xA;" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top" Width="73" Grid.Column="1"/>
+        <TextBox x:Name="parallelSumBox" HorizontalAlignment="Left" Margin="17,303,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="67" Grid.Column="1"/>
+        <Label Content="Parallel Sum" HorizontalAlignment="Left" Margin="10,256,0,0" VerticalAlignment="Top" Grid.Column="1"/>
         <TextBox x:Name="matrix1Visual" HorizontalAlignment="Left" Margin="27,192,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" Height="129"/>
         <TextBox x:Name="matrix2Visual" HorizontalAlignment="Left" Margin="160,192,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" Height="129"/>
         <TextBox x:Name="matrix3Visual" HorizontalAlignment="Left" Margin="293,192,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" Height="129"/>
-        <Label Content="A" HorizontalAlignment="Left" Margin="68,161,0,0" VerticalAlignment="Top"/>
-        <Label Content="B" HorizontalAlignment="Left" Margin="202,161,0,0" VerticalAlignment="Top"/>
-        <Label Content="C" HorizontalAlignment="Left" Margin="312,166,0,0" VerticalAlignment="Top"/>
-        <Label Content="regular time&#xD;&#xA;" HorizontalAlignment="Left" Margin="639,55,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="regularTimeBox" HorizontalAlignment="Left" Margin="639,104,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="74"/>
-        <Label Content="multi time&#xD;&#xA;&#xA;" HorizontalAlignment="Left" Margin="631,174,0,0" VerticalAlignment="Top"/>
-        <Label Content="parallel time&#xA;" HorizontalAlignment="Left" Margin="631,270,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="multiTimeBox" HorizontalAlignment="Left" Margin="632,214,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="74"/>
-        <TextBox x:Name="parallelTimeBox" HorizontalAlignment="Left" Margin="632,317,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="74"/>
-        <Label Content="threads" HorizontalAlignment="Left" Margin="109,104,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="threadsBox" HorizontalAlignment="Left" Margin="170,108,0,0" TextWrapping="Wrap" Text="4" VerticalAlignment="Top" Width="120" />
-        <Label  x:Name="liveMeter" Content="App Is Alive!" HorizontalAlignment="Left" Margin="202,365,0,0" VerticalAlignment="Top"/>
- 
+        <Label Content="Matrix A" HorizontalAlignment="Left" Margin="68,161,0,0" VerticalAlignment="Top"/>
+        <Label Content="Matrix B" HorizontalAlignment="Left" Margin="202,161,0,0" VerticalAlignment="Top"/>
+        <Label Content="ResultMatrix C" HorizontalAlignment="Left" Margin="312,166,0,0" VerticalAlignment="Top"/>
+        <Label Content="Standart&#xA;" HorizontalAlignment="Left" Margin="152,41,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+        <TextBox x:Name="regularTimeBox" HorizontalAlignment="Left" Margin="152,90,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="74" Grid.Column="1"/>
+        <Label Content="MutliThread&#xA;" HorizontalAlignment="Left" Margin="144,160,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+        <Label Content="Parallel Mode&#xA;" HorizontalAlignment="Left" Margin="144,256,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+        <TextBox x:Name="multiTimeBox" HorizontalAlignment="Left" Margin="145,200,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="74" Grid.Column="1"/>
+        <TextBox x:Name="parallelTimeBox" HorizontalAlignment="Left" Margin="145,303,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="74" Grid.Column="1"/>
+        <Label Content="Threads to use&#xA;" HorizontalAlignment="Left" Margin="158,95,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="threadsBox" HorizontalAlignment="Left" Margin="260,99,0,0" TextWrapping="Wrap" Text="4" VerticalAlignment="Top" Width="50" />
+        <Label  x:Name="liveMeter" Content="App Alive!" HorizontalAlignment="Left" Margin="27,59,0,0" VerticalAlignment="Top" Height="49" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="78" FontWeight="Bold">
+            <Label.RenderTransform>
+                <RotateTransform Angle="0"/>
+            </Label.RenderTransform>
+        </Label>
+        <Label Content="Время вычисления" HorizontalAlignment="Left" Margin="128,10,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+        <Label Content="Контрольные суммы" HorizontalAlignment="Left" Margin="445,10,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+        <Rectangle HorizontalAlignment="Left" Height="174" Margin="21,161,0,0" Stroke="Black" VerticalAlignment="Top" Width="411"/>
+        <Label Content="Визуальный контроль матриц" HorizontalAlignment="Left" Margin="27,135,0,0" VerticalAlignment="Top"/>
+        <Label Content="Визуальный&#xD;&#xA;контроль зависания" HorizontalAlignment="Left" Margin="21,10,0,0" VerticalAlignment="Top"/>
+
     </Grid>
 </Window>

@@ -22,9 +22,14 @@ namespace MultiThread_MatrixCalc
     /// </summary>
     public partial class MainWindow : Window
     {
+        System.Windows.Threading.DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+       
+
         int n = 0;
         int[,] A, B, C, Cmulti, Cparallel;
-        
+        int angle = 0;
+        RotateTransform rt;
+
         //метод многопоточного умножения
         void ThreadMultiply(object o)
         {
@@ -42,15 +47,31 @@ namespace MultiThread_MatrixCalc
             }
         }
 
+        
+
         public MainWindow()
         {
             InitializeComponent();
-            
+            //таймер, отвечающий за крутку текста
+            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 10);
+            dispatcherTimer.Start();
+        }
+
+        //обработка тика таймера
+        void dispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            //крутим что б видеть что приложение живое
+            if (angle >= 360) angle = 0; 
+            rt = new RotateTransform() { Angle = angle+=5};
+            liveMeter.LayoutTransform = rt;
+
         }
 
         //calc button
         private void Button_Click(object sender, RoutedEventArgs e)
-        {           
+        {
+           
             //объект рандомайзера
             Random rnd = new Random();
 
@@ -237,6 +258,7 @@ namespace MultiThread_MatrixCalc
             }
             parallelSumBox.Text = Convert.ToString(parallelSum);
 
+           
         }
     }
 }
