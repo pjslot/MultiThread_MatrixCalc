@@ -1,4 +1,5 @@
-﻿using System;
+﻿//Multithread MatrixCalc v1.0 (c) Kabluchkov D.S.
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
 using System.Threading;
+using System.ComponentModel;
 
 namespace MultiThread_MatrixCalc
 {
@@ -29,6 +31,9 @@ namespace MultiThread_MatrixCalc
         int[,] A, B, C, Cmulti, Cparallel;
         int angle = 0;
         RotateTransform rt;
+        string matrix1Viz, matrix2Viz, matrix3Viz, regTime, multiTime, parallelTime, regtextSum, multitextSum, paralleltextSum, uiText, backgroundText;
+        private readonly BackgroundWorker worker = new BackgroundWorker();
+        int threadsCount;
 
         //метод многопоточного умножения
         void ThreadMultiply(object o)
@@ -52,40 +57,32 @@ namespace MultiThread_MatrixCalc
         public MainWindow()
         {
             InitializeComponent();
+            //подписываем фоновый обработчик на методы
+            worker.DoWork += worker_DoWork;
+            worker.RunWorkerCompleted += worker_RunWorkerCompleted;
             //таймер, отвечающий за крутку текста
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
             dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 10);
             dispatcherTimer.Start();
         }
 
-        //обработка тика таймера
-        void dispatcherTimer_Tick(object sender, EventArgs e)
-        {
-            //крутим что б видеть что приложение живое
-            if (angle >= 360) angle = 0; 
-            rt = new RotateTransform() { Angle = angle+=5};
-            liveMeter.LayoutTransform = rt;
 
-        }
-
-        //calc button
-        private void Button_Click(object sender, RoutedEventArgs e)
+        //метод расчёта трёх матриц
+        void MatrixCalc()
         {
-           
             //объект рандомайзера
             Random rnd = new Random();
 
             //объект таймера
-            Stopwatch sw = new Stopwatch();            
+            Stopwatch sw = new Stopwatch();
 
-            //обозначаем размер матриц
-            n = Convert.ToInt32(nMatrixSize.Text);
+
 
             //генерируем 1ю матрицу
-            A = new int[n, n]; 
+            A = new int[n, n];
             for (int i = 0; i < n; i++)
             {
-                for (int j = 0; j < n; j++) A[i, j] = rnd.Next(10);            
+                for (int j = 0; j < n; j++) A[i, j] = rnd.Next(10);
             }
 
             //визуальный контроль 1й матрицы
@@ -94,7 +91,8 @@ namespace MultiThread_MatrixCalc
             {
                 for (int j = 0; j < n; j++) visualControl += Convert.ToString(A[i, j]) + "-";
             }
-            matrix1Visual.Text = visualControl;
+            //выгружаем результат наружу
+            matrix1Viz = visualControl;
 
             //генерируем 2ю матрицу
             B = new int[n, n];
@@ -109,7 +107,8 @@ namespace MultiThread_MatrixCalc
             {
                 for (int j = 0; j < n; j++) visualControl += Convert.ToString(B[i, j]) + "-";
             }
-            matrix2Visual.Text = visualControl;
+            //выгружаем результат наружу
+            matrix2Viz = visualControl;
 
             //==========================================  ОБЫЧНЫЙ  ====================================
 
@@ -119,17 +118,19 @@ namespace MultiThread_MatrixCalc
             sw.Start();
             for (int i = 0; i < n; i++)
             {
-                for (int j =0; j<n; j++)
+                for (int j = 0; j < n; j++)
                 {
-                    for (int k = 0; k<n; k++)
+                    for (int k = 0; k < n; k++)
                     {
-                        C[i,j]=A[i,k]*B[k,j];
+                        C[i, j] = A[i, k] * B[k, j];
                     }
                 }
             }
             //стоп таймера и вывод
             sw.Stop();
-            regularTimeBox.Text= Convert.ToString(sw.ElapsedTicks); //ПОТОМ ПОПРАВИТЬ ТИКИ НА МИЛИСЕКУНДЫ
+
+            //выгружаем время наружу
+            regTime = Convert.ToString(sw.ElapsedMilliseconds);
 
             //визуальный контроль сгенерированной регуляркой 3й матрицы
             visualControl = "";
@@ -137,7 +138,8 @@ namespace MultiThread_MatrixCalc
             {
                 for (int j = 0; j < n; j++) visualControl += Convert.ToString(C[i, j]) + "-";
             }
-            matrix3Visual.Text = visualControl;
+            //выгружаем результат наружу
+            matrix3Viz = visualControl;
 
             //контрольная сумма регулярной матрицы
             int regularSum = 0;
@@ -145,21 +147,19 @@ namespace MultiThread_MatrixCalc
             {
                 for (int j = 0; j < n; j++) regularSum += C[i, j];
             }
-            regularSumBox.Text = Convert.ToString(regularSum);
+            //выгружаем результат наружу
+            regtextSum = Convert.ToString(regularSum);
 
             //=========================  МНОГОПОТОЧНЫЙ  =====================================================
             //создаём 3ю матрицу многопоточным методом
             //инициализируем матрицу
             Cmulti = new int[n, n];
 
-            //получаем количество потоков
-            int threadsCount = Convert.ToInt32(threadsBox.Text);
-
             //создаём массив потоков
             Thread[] threads = new Thread[threadsCount];
 
             //запуск потоков
-            for (int i=0; i<threadsCount; i++)
+            for (int i = 0; i < threadsCount; i++)
             {
                 threads[i] = new Thread(ThreadMultiply);
             }
@@ -179,13 +179,13 @@ namespace MultiThread_MatrixCalc
 
             int rowCounter = 0;
 
-            for (int i=0; i<threadsCount; i++)
+            for (int i = 0; i < threadsCount; i++)
             {
                 //если итерация не последняя
                 if (i != threadsCount - 1)
                 {
                     start[i] = rowCounter;
-                    end[i] = rowCounter + rowsPerThread +1 ;
+                    end[i] = rowCounter + rowsPerThread + 1;
                 }
                 //если итерация последняя
                 else
@@ -200,21 +200,22 @@ namespace MultiThread_MatrixCalc
 
 
             //запуск расчётов в потоках
-            for (int i=0; i<threadsCount; i++)
-            {              
-                object startend = new int[] {start[i],end[i]};
+            for (int i = 0; i < threadsCount; i++)
+            {
+                object startend = new int[] { start[i], end[i] };
                 threads[i].Start(startend);
             }
 
             //ожидание завершения потоков
-            for (int i=0; i<threadsCount; i++)
+            for (int i = 0; i < threadsCount; i++)
             {
                 threads[i].Join();
             }
 
             //стоп таймера и вывод
             sw.Stop();
-            multiTimeBox.Text = Convert.ToString(sw.ElapsedTicks); //ПОТОМ ПОПРАВИТЬ ТИКИ НА МИЛИСЕКУНДЫ
+            //выгружаем время наружу
+            multiTime = Convert.ToString(sw.ElapsedMilliseconds);
 
             //контрольная сумма многопоточной матрицы
             int multiSum = 0;
@@ -222,7 +223,8 @@ namespace MultiThread_MatrixCalc
             {
                 for (int j = 0; j < n; j++) multiSum += Cmulti[i, j];
             }
-            multiSumBox.Text = Convert.ToString(multiSum);
+            //выгружаем результат наружу
+            multitextSum = Convert.ToString(multiSum);
 
 
             //=================================  ПАРАЛЛЕЛЬНЫЙ  ================================================ 
@@ -234,21 +236,22 @@ namespace MultiThread_MatrixCalc
             sw.Restart();
 
             Parallel.For(0, n, i =>
-             {
-                 
-                     for (int j = 0; j < n; j++)
-                     {
-                         for (int k = 0; k < n; k++)
-                         {
-                             Cparallel[i, j] = A[i, k] * B[k, j];
-                         }
-                     }
-                
-             });
+            {
+
+                for (int j = 0; j < n; j++)
+                {
+                    for (int k = 0; k < n; k++)
+                    {
+                        Cparallel[i, j] = A[i, k] * B[k, j];
+                    }
+                }
+
+            });
 
             //стоп таймера и вывод
             sw.Stop();
-            parallelTimeBox.Text = Convert.ToString(sw.ElapsedTicks); //ПОТОМ ПОПРАВИТЬ ТИКИ НА МИЛИСЕКУНДЫ
+            //выгружаем время наружу
+            parallelTime = Convert.ToString(sw.ElapsedMilliseconds);
 
             //контрольная сумма параллельной матрицы
             int parallelSum = 0;
@@ -256,9 +259,63 @@ namespace MultiThread_MatrixCalc
             {
                 for (int j = 0; j < n; j++) parallelSum += Cparallel[i, j];
             }
-            parallelSumBox.Text = Convert.ToString(parallelSum);
+            //выгружаем результат наружу
+            paralleltextSum = Convert.ToString(parallelSum);
+        }
 
-           
+        //работаем в фоне
+        void worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            //вычисляем номер текущего потока
+            backgroundText = Convert.ToString(Thread.CurrentThread.ManagedThreadId);
+            //считаем
+            MatrixCalc();
+        }
+      
+        //закончили работать в фоне
+        private void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            matrix1Visual.Text = matrix1Viz;
+            matrix2Visual.Text = matrix2Viz;
+            matrix3Visual.Text = matrix3Viz;
+
+            regularTimeBox.Text = regTime;
+            multiTimeBox.Text = multiTime;
+            parallelTimeBox.Text = parallelTime;
+
+            regularSumBox.Text = regtextSum;
+            multiSumBox.Text = multitextSum;
+            parallelSumBox.Text = paralleltextSum;
+
+            //вывод информации по потокам
+            uiThreadNumber.Text = uiText;
+            backgroundThreadNumber.Text=backgroundText;
+        }
+
+        //обработка тика таймера
+        void dispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            //крутим что б видеть что приложение живое
+            if (angle >= 360) angle = 0; 
+            rt = new RotateTransform() { Angle = angle+=5};
+            liveMeter.LayoutTransform = rt;
+        }
+
+
+        //кнопка запуска расчёта
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            //обозначаем размер матриц
+            n = Convert.ToInt32(nMatrixSize.Text);
+
+            //получаем количество потоков
+            threadsCount = Convert.ToInt32(threadsBox.Text);
+
+            //вычисляем номер текущего потока
+            uiText = Convert.ToString(Thread.CurrentThread.ManagedThreadId);
+
+            //запуск фонового обработчика
+            worker.RunWorkerAsync();
         }
     }
 }
